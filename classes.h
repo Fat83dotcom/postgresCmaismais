@@ -8,36 +8,38 @@
 
 using namespace pqxx;
 using std::cerr;
+using std::string;
 
-class conecPostgres{
-private:
-    char config[200];
-    
+class ObjetosBd{
 public:
-    conecPostgres(const char *sConfig);
-    ~conecPostgres();
-    void conne(const char sConfig);
+    virtual void insertDados() = 0;
 };
 
-conecPostgres::conecPostgres(const char *sConfig){
-    strcpy(this->config, sConfig);
-}
 
-void conecPostgres::conne(const char sConfig){
-    try{
-        conecPostgres dB(config);
+class ConecPostgres : public ObjetosBd{
+private:
+    string config;
+    
+public:
+    ConecPostgres(const string &sConfig);
+    
+    ConecPostgres::ConecPostgres(const string &sConfig){
+        try{
+            this->config = sConfig;
+        }
+        catch(const std::exception &e){
+            std::cerr << e.what() << '\n';
+        }
     }
-    catch(const std::exception& e)
-    {
-        cerr << e.what() << '\n';
+
+    void ConecPostgres::insertDados() override{
+        try{
+            pqxx::connection conn(this->config);
+        }
+        catch(const std::exception& e){
+            std::cerr << e.what() << '\n';
+        }
     }
-    
-    
-}
-
-conecPostgres::~conecPostgres(){
-    
-}
-
+};
 
 #endif
