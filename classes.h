@@ -4,6 +4,7 @@
 #include <string>
 #include <pqxx/pqxx>
 #include <iostream>
+#include "confidencial.h"
 
 
 using namespace pqxx;
@@ -11,6 +12,10 @@ using std::cerr;
 using std::string;
 
 typedef struct TabelaCliente{
+    const string tabela = "cliente";
+    const string colunas = "nome_cliente, cpf_cliente, "
+    "data_nasc, endereco_rua, endereco_numero, endereco_bairro, "
+    "enderco_cep, endereco_estado, endereco_cidade";
     string nome_cliente;
     string cpf_cliente;
     string data_nasc;
