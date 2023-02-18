@@ -12,8 +12,8 @@ using std::getline;
 using std::endl;
 
 int main(void){
-    // string nome, idade;
-    // int idadeInt;
+    string nome, idade;
+    int idadeInt;
     try{
         pqxx::connection c(DADOSBANCO);
         if (c.is_open()){
@@ -26,35 +26,35 @@ int main(void){
         
         c.prepare("insertDados", "INSERT INTO teste (nome, idade) values ($1, $2)");
         pqxx::work objT(c);
-        // cout << "Entre com 3 registros nome e idade:" << endl;
-        // for (int i = 0; i < 3; i++){
-        //     cout << "Digite um nome: ";
-        //     getline(cin, nome);
-        //     cout <<"Digite a idade: ";
-        //     getline(cin, idade);
-        //     int j = 0;
-        //     bool numero;
-        //     while (idade[j]){
-        //         if (!isalpha(idade[j])){
-        //             numero = true;
-        //         }
-        //         else{
-        //             numero = false;
-        //             break;
-        //         }
-        //         j++;
-        //     }
-        //     if (numero){
-        //         stringstream(idade) >> idadeInt;
-        //         objT.exec_prepared0("insertDados", nome, idadeInt);
-        //         // objT.commit();
-        //         cout << "dado inserido com sucesso" << endl;
-        //     }
-        //     else{
-        //         cout << "A idade não é um número." << endl;
-        //         cout << "O dado não foi inserido." << endl;
-        //     }
-        // }
+        cout << "Entre com 3 registros nome e idade:" << endl;
+        for (int i = 0; i < 3; i++){
+            cout << "Digite um nome: ";
+            getline(cin, nome);
+            cout <<"Digite a idade: ";
+            getline(cin, idade);
+            int j = 0;
+            bool numero;
+            while (idade[j]){
+                if (!isalpha(idade[j])){
+                    numero = true;
+                }
+                else{
+                    numero = false;
+                    break;
+                }
+                j++;
+            }
+            if (numero){
+                stringstream(idade) >> idadeInt;
+                objT.exec_prepared0("insertDados", nome, idadeInt);
+                // objT.commit();
+                cout << "dado inserido com sucesso" << endl;
+            }
+            else{
+                cout << "A idade não é um número." << endl;
+                cout << "O dado não foi inserido." << endl;
+            }
+        }
 
         pqxx::result consulta = objT.exec("SELECT * FROM teste");
         cout << "Id      Nome    Idade" << endl;
@@ -75,8 +75,8 @@ int main(void){
         //     }
         //     cout << std::endl;
         // }
+
         objT.commit();
-        
         c.disconnect();
     }
     catch(const std::exception& e){
