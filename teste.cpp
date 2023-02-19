@@ -46,7 +46,7 @@ int main(void){
             }
             if (numero){
                 stringstream(idade) >> idadeInt;
-                objT.exec_prepared0("insertDados", nome, idadeInt);
+                objT.exec_prepared("insertDados", nome, idadeInt);
                 // objT.commit();
                 cout << "dado inserido com sucesso" << endl;
             }

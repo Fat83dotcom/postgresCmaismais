@@ -9,7 +9,7 @@ using std::vector;
 int main(void){
     TabelaTeste tb_t;
     ConectBD c;
-    tb_t.campos.push_back("guduxinha");
+    tb_t.campos.push_back("guduxilinho");
     tb_t.campos.push_back("6");
     
     c.preparaDados("tabelaTesteInsert", tb_t.sqlInsertTTeste);

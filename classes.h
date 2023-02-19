@@ -56,14 +56,16 @@ public:
 
     void executarPreparaInsert(const string &nomeprepara, const vector<string> &args){
         try{
+            
+            pqxx::work w(this->con);
             pqxx::params argumentos;
             for (const auto &arg : args){
                 argumentos.append(arg);
+                cout << arg << endl;
             }
-            
-            pqxx::work w(this->con);
+            // cout << argumentos << endl;
             w.exec_prepared(nomeprepara, argumentos);
-            
+            w.commit();
         }
         catch(const std::exception& e){
             std::cerr << e.what() << '\n';
@@ -71,27 +73,31 @@ public:
     }
 
     void imprimirPreparaResult(const string &nomeprepara, const vector<string> &args){
-        pqxx::result r;
-        pqxx::work w(this->con);
-        if (args.size() == 0) {
-            r = w.exec_prepared(nomeprepara);
-        }
-        else{
-            pqxx::params argumentos;
-            for (const auto &arg : args){
-                argumentos.append(arg);
+        try{
+            pqxx::result r;
+            pqxx::work w(this->con);
+            if (args.size() == 0) {
+                r = w.exec_prepared(nomeprepara);
             }
-
-            r = w.exec_prepared(nomeprepara, argumentos);
+            else{
+                pqxx::params argumentos;
+                for (const auto &arg : args){
+                    argumentos.append(arg);
+                }
+                r = w.exec_prepared(nomeprepara, argumentos);
+            }
+            cout << "Id      Nome    Idade" << endl;
+            for (const auto &row: r){
+                for (const auto &field: row){
+                    cout << field.c_str() << "   ";
+                } 
+                cout << endl;
+            }
+            w.commit();
         }
-        cout << "Id      Nome    Idade" << endl;
-        for (const auto &row: r){
-            for (const auto &field: row){
-                cout << field.c_str() << "   ";
-            } 
-            cout << endl;
+        catch(const std::exception& e){
+            std::cerr << e.what() << '\n';
         }
-        w.commit();
     }
 };
 
