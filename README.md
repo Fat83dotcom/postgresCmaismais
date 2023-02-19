@@ -1,10 +1,10 @@
 # postgresCmaismais
-## Classe ConectBD para encapsular e generalizar transações com banco de dados PostgreSQL, usando a biblioteca libpqxx
+## Classe ConectBD para encapsular e generalizar transações com banco de dados PostgreSQL, usando a biblioteca libpqxx.
 
 ## Dependências:
 
-- Biblioteca libpqxx versão 7.6, complilada do repositório oficial [GitHub jtv] https://github.com/jtv/libpqxx
-- C++17 (mínimo para as versões 7.x)
+- Biblioteca libpqxx versão 7.6, complilada do repositório oficial [GitHub jtv] (https://github.com/jtv/libpqxx).
+- C++17 (mínimo para as versões 7.x).
 
 
 <div>
