@@ -3,7 +3,7 @@
 
 ## Dependências:
 
-- Biblioteca libpqxx versão 7.6, complilada do repositório oficial [GitHub jtv] (https://github.com/jtv/libpqxx).
+- Biblioteca libpqxx versão 7.6, complilada do repositório oficial [GitHub jtv](https://github.com/jtv/libpqxx).
 - C++17 (mínimo para as versões 7.x).
 
 
