@@ -11,15 +11,15 @@
 
 
 using std::cerr;
+using std::cout;
+using std::endl;
 using std::string;
 using std::vector;
 
 typedef struct TabelaTeste{
-    const string tabela = "teste";
-    const string colunas = "nome, idade";
+    const string sqlInsertTTeste = "INSERT INTO teste (nome, idade) VALUES($1, $2)";
+    const string sqlSelectTTest = "SELECT * FROM teste";
     vector<string> campos;
-    // string nome;
-    // string idade;
 }TabelaTeste;
 
 typedef struct TabelaCliente{
@@ -38,23 +38,12 @@ typedef struct TabelaCliente{
     string endereco_cidade;
 }TabelaCliente;
 
-
-// class ObjetosBd{
-// public:
-//     virtual void preparaDados(const string &nomePrepara, const string &sql) = 0;
-//     virtual void executarPreparaInsert(const string &nomeprepara, ...) = 0;
-// };
-
-
 class ConectBD {
 private:
     pqxx::connection con;
 
 public:
     ConectBD() : con(DADOSBANCO) {}
-    // void ConectBD::preparaDados(const string &nomePrepara, const string &sql);
-
-    // void ConectBD::executarPreparaInsert(const string &nomeprepara, ...);
 
     void preparaDados(const string &nomePrepara, const string &sql){
         try{
@@ -74,12 +63,35 @@ public:
             
             pqxx::work w(this->con);
             w.exec_prepared(nomeprepara, argumentos);
-            w.commit();
             
         }
         catch(const std::exception& e){
             std::cerr << e.what() << '\n';
         }
+    }
+
+    void imprimirPreparaResult(const string &nomeprepara, const vector<string> &args){
+        pqxx::result r;
+        pqxx::work w(this->con);
+        if (args.size() == 0) {
+            r = w.exec_prepared(nomeprepara);
+        }
+        else{
+            pqxx::params argumentos;
+            for (const auto &arg : args){
+                argumentos.append(arg);
+            }
+
+            r = w.exec_prepared(nomeprepara, argumentos);
+        }
+        cout << "Id      Nome    Idade" << endl;
+        for (const auto &row: r){
+            for (const auto &field: row){
+                cout << field.c_str() << "   ";
+            } 
+            cout << endl;
+        }
+        w.commit();
     }
 };
 

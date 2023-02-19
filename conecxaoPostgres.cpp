@@ -6,14 +6,18 @@
 
 using std::vector;
 
-int main(int argc, char const *argv[]){
+int main(void){
     TabelaTeste tb_t;
     ConectBD c;
-    tb_t.campos.push_back("Gudulinhosidade");
-    tb_t.campos.push_back("5");
-    const string sqlInsertTTeste = "INSERT INTO " + tb_t.tabela + " (" + tb_t.colunas + ") " + 
-    " VALUES($1, $2)";
-    c.preparaDados("tabelaTeste", sqlInsertTTeste);
-    c.executarPreparaInsert("tabelaTeste", tb_t.campos);
+    tb_t.campos.push_back("guduxinha");
+    tb_t.campos.push_back("6");
+    
+    c.preparaDados("tabelaTesteInsert", tb_t.sqlInsertTTeste);
+    c.executarPreparaInsert("tabelaTesteInsert", tb_t.campos);
+    tb_t.campos.clear();
+   
+    c.preparaDados("tabelaTesteSelect", tb_t.sqlSelectTTest);
+    c.imprimirPreparaResult("tabelaTesteSelect", tb_t.campos);
+
     return 0;
 }
