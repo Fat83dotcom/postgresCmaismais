@@ -1,5 +1,5 @@
 #include <iostream>
-#include <pqxx/pqxx>
+# include <pqxx/pqxx>
 #include <chrono>
 #include "confidencial.h"
 
@@ -77,7 +77,7 @@ int main(void){
         // }
 
         objT.commit();
-        c.disconnect();
+        // c.disconnect();
     }
     catch(const std::exception& e){
         cerr << e.what() << '\n';

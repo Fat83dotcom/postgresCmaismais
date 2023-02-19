@@ -3,13 +3,24 @@
 
 #include <string>
 #include <pqxx/pqxx>
+#include <pqxx/pqxx>
+#include <pqxx/transaction_base>
 #include <iostream>
+#include <vector>
 #include "confidencial.h"
 
 
-using namespace pqxx;
 using std::cerr;
 using std::string;
+using std::vector;
+
+typedef struct TabelaTeste{
+    const string tabela = "teste";
+    const string colunas = "nome, idade";
+    vector<string> campos;
+    // string nome;
+    // string idade;
+}TabelaTeste;
 
 typedef struct TabelaCliente{
     const string tabela = "cliente";
@@ -28,40 +39,43 @@ typedef struct TabelaCliente{
 }TabelaCliente;
 
 
-class ObjetosBd{
-public:
-    virtual void insertDados() = 0;
-};
+// class ObjetosBd{
+// public:
+//     virtual void preparaDados(const string &nomePrepara, const string &sql) = 0;
+//     virtual void executarPreparaInsert(const string &nomeprepara, ...) = 0;
+// };
 
 
-class ConecPostgres : public ObjetosBd{
+class ConectBD {
 private:
-    string config;
-    string sqlInsert;
-    
+    pqxx::connection con;
+
 public:
-    ConecPostgres(const string &sConfig);
-    string ConecPostgres::recebeSqlInsert(const string &sql);
-    
-    ConecPostgres::ConecPostgres(const string &sConfig){
+    ConectBD() : con(DADOSBANCO) {}
+    // void ConectBD::preparaDados(const string &nomePrepara, const string &sql);
+
+    // void ConectBD::executarPreparaInsert(const string &nomeprepara, ...);
+
+    void preparaDados(const string &nomePrepara, const string &sql){
         try{
-            this->config = sConfig;
+            this->con.prepare(nomePrepara, sql);
         }
-        catch(const std::exception &e){
+        catch(const std::exception& e){
             std::cerr << e.what() << '\n';
         }
     }
 
-    string ConecPostgres::recebeSqlInsert(const string &sql){
-        this->sqlInsert = sql;
-    }
-
-    void ConecPostgres::insertDados() override{
+    void executarPreparaInsert(const string &nomeprepara, const vector<string> &args){
         try{
-            pqxx::connection conn(this->config);
-            pqxx::work txn(conn);
-            txn.exec0(sqlInsert);
-            txn.commit();
+            pqxx::params argumentos;
+            for (const auto &arg : args){
+                argumentos.append(arg);
+            }
+            
+            pqxx::work w(this->con);
+            w.exec_prepared(nomeprepara, argumentos);
+            w.commit();
+            
         }
         catch(const std::exception& e){
             std::cerr << e.what() << '\n';

@@ -1,13 +1,19 @@
 #include <pqxx/pqxx>
+#include <vector>
 #include <iostream>
 #include "classes.h"
 #include "confidencial.h"
 
+using std::vector;
 
 int main(int argc, char const *argv[]){
-    TabelaCliente tb_c;
-    ConecPostgres c(DADOSBANCO);
-    const string sqlInsert = "INSERT INTO" + tb_c.tabela + tb_c.colunas + 
-    "VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)";
+    TabelaTeste tb_t;
+    ConectBD c;
+    tb_t.campos.push_back("Gudulinhosidade");
+    tb_t.campos.push_back("5");
+    const string sqlInsertTTeste = "INSERT INTO " + tb_t.tabela + " (" + tb_t.colunas + ") " + 
+    " VALUES($1, $2)";
+    c.preparaDados("tabelaTeste", sqlInsertTTeste);
+    c.executarPreparaInsert("tabelaTeste", tb_t.campos);
     return 0;
 }

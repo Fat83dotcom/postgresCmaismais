@@ -4,6 +4,9 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
+                "/usr/local/lib",
+                "/usr/local/include/",
+                "/usr/include/x86_64-linux-gnu/gnu",
                 "/usr/include",
                 "/usr/include/cppconn",
                 "/usr/include/c++/11",
@@ -13,9 +16,11 @@
                 "/usr/include/c++/11/tr1"
             ],
             "defines": [],
-            "cppStandard": "c++14",
-            "intelliSenseMode": "linux-clang-x64",
-            "configurationProvider": "ms-vscode.makefile-tools"
+            "cppStandard": "c++17",
+            "intelliSenseMode": "${default}",
+            "configurationProvider": "ms-vscode.makefile-tools",
+            "compilerPath": "${default}",
+            "cStandard": "c17"
         }
     ],
     "version": 4
