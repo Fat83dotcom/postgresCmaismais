@@ -15,7 +15,7 @@ int main(void){
     b.push_back("6");
 
     c.preparaDados("testando", "insert into teste (nome, idade) values ($1, $2)");
-    c.executarPreparaInsert("testando", b);
+    c.executarPrepara("testando", b);
 
     return 0;
 }

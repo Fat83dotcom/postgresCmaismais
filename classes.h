@@ -18,7 +18,11 @@ using std::vector;
 
 typedef struct TabelaTeste{
     const string sqlInsertTTeste = "INSERT INTO teste (nome, idade) VALUES($1, $2)";
-    const string sqlSelectTTest = "SELECT * FROM teste";
+    const string sqlSelectTTestAll = "SELECT * FROM teste";
+    const string sqlSelectTTestId = "SELECT * FROM teste WHERE codigo=$1";
+    const string sqltSelectTTestNome = "SELECT * FROM teste WHERE nome=$1";
+    const string sqltSelectTTestIdade = "SELECT * FROM teste WHERE idade=$1";
+    const string sqlDeleteTTestId = "DELETE FROM teste WHERE codigo=$1";
     vector<string> campos;
 }TabelaTeste;
 
@@ -54,16 +58,13 @@ public:
         }
     }
 
-    void executarPreparaInsert(const string &nomeprepara, const vector<string> &args){
+    void executarPrepara(const string &nomeprepara, const vector<string> &args){
         try{
-            
             pqxx::work w(this->con);
             pqxx::params argumentos;
             for (const auto &arg : args){
                 argumentos.append(arg);
-                cout << arg << endl;
             }
-            // cout << argumentos << endl;
             w.exec_prepared(nomeprepara, argumentos);
             w.commit();
         }
@@ -93,6 +94,7 @@ public:
                 } 
                 cout << endl;
             }
+            cout << endl;
             w.commit();
         }
         catch(const std::exception& e){
